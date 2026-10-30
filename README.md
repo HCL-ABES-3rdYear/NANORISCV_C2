@@ -103,6 +103,8 @@ To evaluate pipeline efficiency, a 500-row execution trace dataset (`dataset.csv
 - **Stall Rates & CPI:** The mean Cycles Per Instruction (CPI) across the trace is 1.688. Instructions like `ADD` (13.8%), `SW` (13.5%), and `LW` (10.7%) exhibit higher stall frequencies.
 - **Branch Outcomes:** `BEQ` instructions have a taken rate of 23.1%, resulting in control flow redirects that flush the pipeline and cost cycles.
 
+![Stall Telemetry Plot](docs/stall_telemetry.png)
+
 ## Multi-Model AI Disclosure
 
 In accordance with academic integrity and ethical guidelines, multiple AI assistants collaboratively contributed to this project:
