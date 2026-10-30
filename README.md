@@ -60,6 +60,19 @@ Simulation can be used to study:
 - Instruction and data-memory behavior.
 - Program-counter updates and processor execution.
 
+### Verification Status
+| Testbench | Module Tested | Verification Result |
+|---|---|---|
+| `tb_alu` | `alu` | **PASS (verified)** |
+| `tb_control_unit` | `control_unit` | **PASS** |
+| `tb_dmem` | `dmem` | **PASS (saved xsim log)** |
+| `tb_if_id_reg` | `if_id_reg` | **PASS (waveform verified)** |
+| `tb_imem` | `imem` | **PASS** |
+| `tb_imm_gen` | `imm_gen` | **PASS** |
+| `tb_pc_reg` | `pc_reg` | **PASS** |
+| `tb_regfile` | `regfile` | **PASS** |
+| `tb_nanoriscv_top` | `nanoriscv_top` | **PASS (Integration Test Successful)** |
+
 ## Synthesis and Timing Analysis
 
 The archived Vivado implementation reports contain the following results for the selected FPGA target:
@@ -76,6 +89,27 @@ The archived Vivado implementation reports contain the following results for the
 
 The archived routed timing report indicates that the design met the specified timing constraints for that implementation run. Results may vary if the RTL, constraints, target device, or tool settings change.
 
+## Machine Learning Stall Analysis & Telemetry
+
+To evaluate pipeline efficiency, a 500-row execution trace dataset (`dataset.csv`) was analyzed using Python.
+
+### Random Forest Classifier Results
+- **Model:** Random Forest Classifier (`random_state=42`, `test_size=0.2`)
+- **Features:** Opcode (one-hot encoded), source registers (`rs1`, `rs2`), and destination register (`rd`)
+- **Target:** Pipeline stall prediction (`stall`)
+- **Test Accuracy:** **87.00%** (Matches majority-class baseline)
+
+### Telemetry Insights
+- **Stall Rates & CPI:** The mean Cycles Per Instruction (CPI) across the trace is 1.688. Instructions like `ADD` (13.8%), `SW` (13.5%), and `LW` (10.7%) exhibit higher stall frequencies.
+- **Branch Outcomes:** `BEQ` instructions have a taken rate of 23.1%, resulting in control flow redirects that flush the pipeline and cost cycles.
+
+## Multi-Model AI Disclosure
+
+In accordance with academic integrity and ethical guidelines, multiple AI assistants collaboratively contributed to this project:
+- **ChatGPT (OpenAI):** Initial RTL code structuring and instruction-set architecture (ISA) debugging.
+- **Claude (Anthropic):** Synopsis drafting, dataset structuring, and Vivado report analysis.
+- **Gemini (Google):** Machine learning dataset analysis, telemetry visualization scripts, and documentation review.
+
 ## Repository Structure
 
 ```text
@@ -85,42 +119,3 @@ NANORISCV-C2/
 ├── simulations/
 ├── timing_constraints/
 └── README.md
-```
-
-The repository contains processor design files, schematics, simulation resources, and timing constraints. Ensure the folder names shown here match the files currently present in the repository.
-
-## How to Open the Project
-
-1. Install AMD/Xilinx Vivado.
-2. Clone or download this repository.
-3. Open `NANORISCV_C2.xpr` in Vivado.
-4. Review the Verilog source files and project hierarchy.
-5. Select the required testbench and run behavioral simulation.
-6. Inspect the simulation waveforms and implementation reports.
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/devanshgit07/NANORISCV-C2.git
-cd NANORISCV-C2
-```
-
-## Future Scope
-
-- Expand instruction-level verification.
-- Improve processor control and execution mechanisms.
-- Extend instruction-set support.
-- Explore hardware resource and timing optimization.
-- Explore deployment on a compatible FPGA development board.
-
-## Author
-
-**Devansh Srivastava**  
-Electronics and Communication Engineering  
-ABES Engineering College
-
-GitHub: [@devanshgit07](https://github.com/devanshgit07)
-
----
-
-*An academic project exploring processor design, Verilog-based digital systems, simulation, and FPGA implementation.*
